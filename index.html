@@ -5,6 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .todo-item{
+            border: 4px  double #730099;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #f2ccff;
+            color: #730099;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn{
+            background-color: tomato;
+            color: white;
+            font-size: 9px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            height: 16px;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,7 +34,7 @@
 
     </div>
     <script>
-        const tasks = ["Buy Vegetables","Revise localStorage","Go to the collage","sing song"];
+        const tasks = ["Buy Vegetables","Revise localStorage","Go to the collage","do some activity"];
 
         function loadTasks(){
             const tasksContainer = document.getElementById('tasks-container');
@@ -23,15 +44,25 @@
             {
                 tasksContainer.innerHTML += `
                 
-                <div>
+                <div class="todo-item">
                     ${task}
+                    <button class="btn" type="button" onclick="deleteTask('${task}')">
+                        Delete</button>
                     </div>
                     `
                 }
             
         }
-        
         loadTasks();
+
+        function deleteTask(task){
+            const taskIndex = tasks.indexOf(task);
+            tasks.splice(taskIndex,1);
+
+            loadTasks();
+        }
+        
+        
     </script>
 </body>
 </html>
