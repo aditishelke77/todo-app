@@ -6,8 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        .todo-item{
-            border: 4px  double #730099;
+        @font-face{
+            font-family:"RTC";
+            src:url("./BeautyMountainsPersonalUse-od7z.ttf")
+        }
+        .heading{
+            text-align: center;
+            font-size: 50px;
+            font-family:"RTC";
+            src:url("./BeautyMountainsPersonalUse-od7z.ttf")
+        }
+        
+        .todo-item {
+            border: 4px double #730099;
             padding: 5px;
             margin: 5px;
             border-radius: 5px;
@@ -16,7 +27,8 @@
             display: flex;
             justify-content: space-between;
         }
-        .btn{
+
+        .btn {
             background-color: tomato;
             color: white;
             font-size: 9px;
@@ -25,23 +37,60 @@
             cursor: pointer;
             height: 16px;
         }
+        .tasks-container{
+            height: 250;
+            overflow-y: scroll;
+        }
+        .task-input-container{
+            display: flex;
+            justify-content: space-around;
+            margin: 10px;
+        }
+        .task-input{
+            width: 50%;
+            border-radius: 10px;
+            padding: 5px;
+            border:2px solid #730099;
+        }
+        .btn-add{
+            border-radius: 40px;
+            background-color: #730099;
+            color: white;
+            padding: 5px 30px;
+            border: none;
+        }
     </style>
 </head>
 
 <body>
-    <h1>ToDo App</h1>
-    <div id="tasks-container">
-
+    <h1 class="heading">ToDo App</h1>
+    <div id="tasks-container" class="tasks-container"></div>
+    <div class="task-input-container">
+        <input type="text" id="task-input" placeholder="Enter a task" class="task-input">
+        <button onclick="addTask()" class="btn-add">Add Task</button>
     </div>
+    
     <script>
-        const tasks = ["Buy Vegetables","Revise localStorage","Go to the collage","do some activity"];
+        const tasks = [];
 
-        function loadTasks(){
+        function loadFromLocalStorage(){
+            const allTasks = JSON.parse(localStorage.getItem('allTasks'));
+
+            if (allTasks) {
+                tasks.push(...allTasks)
+            }
+            loadTasks();
+        }
+        loadFromLocalStorage();
+
+
+        function loadTasks() {
+            localStorage.setItem('allTasks', JSON.stringify(tasks));
+
             const tasksContainer = document.getElementById('tasks-container');
             tasksContainer.innerHTML = '';
-            
-            for(const task of tasks) 
-            {
+
+            for (const task of tasks) {
                 tasksContainer.innerHTML += `
                 
                 <div class="todo-item">
@@ -50,19 +99,33 @@
                         Delete</button>
                     </div>
                     `
-                }
-            
+            }
         }
-        loadTasks();
 
-        function deleteTask(task){
+
+        function deleteTask(task) {
             const taskIndex = tasks.indexOf(task);
-            tasks.splice(taskIndex,1);
+            tasks.splice(taskIndex, 1);
 
             loadTasks();
         }
-        
-        
+
+        function addTask(){
+            const taskInputElement = document.getElementById('task-input');
+            const task = taskInputElement.value;
+            if(!task){
+                alert('Please enter a task');
+                return;
+            }
+
+            tasks.unshift(task);
+            loadTasks();
+
+            taskInputElement.value ='';
+        }
+
+
     </script>
 </body>
+
 </html>
